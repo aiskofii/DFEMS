@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="DFEMS/DFEMS.vcxproj" Id="541c7121-b8ec-4b24-b32c-4ce3fb1733ad" />
+</Solution>
