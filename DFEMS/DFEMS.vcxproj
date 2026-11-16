@@ -145,11 +145,19 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="archived_cases.h" />
+    <ClInclude Include="case_management.h" />
+    <ClInclude Include="chain_of_custody.h" />
+    <ClInclude Include="evidence_management.h" />
+    <ClInclude Include="fa_menu.h" />
     <ClInclude Include="functionalities.h" />
     <ClInclude Include="admin_menu.h" />
+    <ClInclude Include="iv_menu.h" />
     <ClInclude Include="login_page.h" />
     <ClInclude Include="mysql.h" />
+    <ClInclude Include="report_management.h" />
     <ClInclude Include="user_management.h" />
+    <ClInclude Include="verify_integrity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

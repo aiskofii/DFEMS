@@ -1,190 +1,228 @@
 #pragma once
 
-
 // Functionalities
 void clearScreen();
 void hideCursor();
 void showCursor();
 void passwordInput(std::string& outPassword);
+std::string sha256(const std::string& input);
 
 // Main Menu Functions
-void mainMenu();
-void usersMenu();
-void casesMenu();
+void adminMenu();
 void exitMenu();
 
 // User Management Functions
+void usersMenu();
 void addUser();
 void editUser();
 void deleteUser();
 void viewUsers();
 
-void mainMenu() {
-	hideCursor();
-	const char* title = R"(
-				$$$$$$$\  $$$$$$$$\ $$$$$$$$\ $$\      $$\  $$$$$$\  
-				$$  __$$\ $$  _____|$$  _____|$$$\    $$$ |$$  __$$\ 
-				$$ |  $$ |$$ |      $$ |      $$$$\  $$$$ |$$ /  \__|
-				$$ |  $$ |$$$$$\    $$$$$\    $$\$$\$$ $$ |\$$$$$$\  
-				$$ |  $$ |$$  __|   $$  __|   $$ \$$$  $$ | \____$$\ 
-				$$ |  $$ |$$ |      $$ |      $$ |\$  /$$ |$$\   $$ |
-				$$$$$$$  |$$ |      $$$$$$$$\ $$ | \_/ $$ |\$$$$$$  |
-				\_______/ \__|      \________|\__|     \__| \______/    
-				    Digital Forensics Evidence Management System
-		)";
+// Case Management Functions (admin side)
+void adminCasesMenu();
 
-	std::cout << title << std::endl;
 
-	std::string options = R"(
-				=====================================================
-						1. User Management
-						2. Case Management
-						3. Evidence Management
-						4. Chain of Custody
-						5. Audit Logs
-						6. Exit
-				=====================================================
-	)";
+void adminMenu() {
+    hideCursor();
+    const char* title = R"(
+                $$$$$$$\  $$$$$$$$\ $$$$$$$$\ $$\      $$\  $$$$$$\  
+                $$  __$$\ $$  _____|$$  _____|$$$\    $$$ |$$  __$$\ 
+                $$ |  $$ |$$ |      $$ |      $$$$\  $$$$ |$$ /  \__|
+                $$ |  $$ |$$$$$\    $$$$$\    $$\$$\$$ $$ |\$$$$$$\  
+                $$ |  $$ |$$  __|   $$  __|   $$ \$$$  $$ | \____$$\ 
+                $$ |  $$ |$$ |      $$ |      $$ |\$  /$$ |$$\   $$ |
+                $$$$$$$  |$$ |      $$$$$$$$\ $$ | \_/ $$ |\$$$$$$  |
+                \_______/ \__|      \________|\__|     \__| \______/    
+                    Digital Forensics Evidence Management System
+        )";
 
-	std::cout << options << std::endl;
+    std::cout << title << std::endl;
 
-	while (true) {
-		int choice;
-		choice = _getch() - '0';
-		switch (choice) {
-		case 1:
-			clearScreen();
-			std::cout << title << std::endl;
-			usersMenu();
-			break;
-		case 2:
-			clearScreen();
-			std::cout << title << std::endl;
-			casesMenu();
-			break;
-		case 6:
-			clearScreen();
-			std::cout << title << std::endl;
-			exitMenu();
-			break;
-		default:
-			std::cout << "Invalid choice. Please try again." << std::endl;
-		}
-	}
+    std::string options = R"(
+                =====================================================
+                        1. Manage Users Account
+                        2. Manage Cases
+                        3. Review Report Logs
+                        4. Generate Report
+                        5. Exit
+                =====================================================
+    )";
+
+    std::cout << options << std::endl;
+
+    while (true) {
+        int choice = _getch() - '0';
+
+        switch (choice) {
+            case 1:
+                clearScreen();
+                std::cout << title << std::endl;
+                usersMenu();
+                break;
+            case 2:
+                clearScreen();
+                std::cout << title << std::endl;
+                adminCasesMenu();
+                break;
+            case 3:
+                clearScreen();
+                std::cout << title << std::endl;
+                reportLogs();
+                break;
+            case 4:
+                clearScreen();
+                std::cout << title << std::endl;
+                reportGenerate();
+                break;
+            case 5:
+                clearScreen();
+                std::cout << title << std::endl;
+				exitMenu();
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
+        }
+    }
+}
+
+/* Case Management (admin) */
+
+void adminCasesMenu() {
+    std::string options = R"(
+                =====================================================
+                        1. View Cases
+                        2. Create a Case
+                        3. Assign Investigators / Forensic Analysts
+                        4. Archive a Case
+                        5. Archived Cases
+                        6. Back to Main Menu
+                =====================================================
+    )";
+
+    std::cout << options << std::endl;
+
+    while (true) {
+        int choice = _getch() - '0';
+
+        switch (choice) {
+            case 1:
+                clearScreen();
+                viewCases();
+                break;
+            case 2:
+                clearScreen();
+                addCase();
+                break;
+            case 3:
+                clearScreen();
+                assignCase();
+                break;
+            case 4:
+                clearScreen();
+                archiveCase();
+                break;
+            case 5:
+                clearScreen();
+                archivedCasesMenu();
+                break;
+            case 6:
+                clearScreen();
+                adminMenu();
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
+        }
+    }
 }
 
 /* User Management */
 
 void usersMenu() {
-	std::string options = R"(
-				=====================================================
-						1. Add User
-						2. Edit User
-						3. Delete User
-						4. View Users
-						5. Back to Main Menu
-				=====================================================
-	)";
-	std::cout << options << std::endl;
-	while (true) {
-		int choice;
-		choice = _getch() - '0';
-		switch (choice) {
-		case 1:
-			clearScreen();
-			addUser();
-			break;
-		case 2:
-			clearScreen();
-			editUser();
-			break;
-		case 3:
-			clearScreen();
-			deleteUser();
-			break;
-		case 4:
-			clearScreen();
-			viewUsers();
-			break;
-		case 5:
-			clearScreen();
-			mainMenu();
-			break;
-		default:
-			std::cout << "Invalid choice. Please try again." << std::endl;
-		}
-	}
-}
+    std::string options = R"(
+                =====================================================
+                        1. View current users
+                        2. Add a user
+                        3. Edit user's information
+                        4. Delete a user
+                        5. Back to Main Menu
+                =====================================================
+    )";
 
-/* Case Management */
+    std::cout << options << std::endl;
 
-void casesMenu() {
-	std::string options = R"(
-				=====================================================
-						1. Add Case
-						2. Edit Case
-						3. Delete Case
-						4. View Cases
-						5. Back to Main Menu
-				=====================================================
-	)";
-	std::cout << options << std::endl;
-	while (true) {
-		int choice;
-		choice = _getch() - '0';
-		switch (choice) {
-		case 5:
-			clearScreen();
-			mainMenu();
-			break;
-		default:
-			std::cout << "Invalid choice. Please try again." << std::endl;
-		}
-	}
+    while (true) {
+        int choice = _getch() - '0';
+
+        switch (choice) {
+            case 1:
+                clearScreen();
+                viewUsers();
+                break;
+            case 2:
+                clearScreen();
+                addUser();
+                break;
+            case 3:
+                clearScreen();
+                editUser();
+                break;
+            case 4:
+                clearScreen();
+                deleteUser();
+                break;
+            case 5:
+                clearScreen();
+                adminMenu();
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
+        }
+    }
 }
 
 /* Exit Menu */
 
 void exitMenu() {
-	std::string title = R"(
-				$$$$$$$\  $$$$$$$$\ $$$$$$$$\ $$\      $$\  $$$$$$\  
-				$$  __$$\ $$  _____|$$  _____|$$$\    $$$ |$$  __$$\ 
-				$$ |  $$ |$$ |      $$ |      $$$$\  $$$$ |$$ /  \__|
-				$$ |  $$ |$$$$$\    $$$$$\    $$\$$\$$ $$ |\$$$$$$\  
-				$$ |  $$ |$$  __|   $$  __|   $$ \$$$  $$ | \____$$\ 
-				$$ |  $$ |$$ |      $$ |      $$ |\$  /$$ |$$\   $$ |
-				$$$$$$$  |$$ |      $$$$$$$$\ $$ | \_/ $$ |\$$$$$$  |
-				\_______/ \__|      \________|\__|     \__| \______/    
-				    Digital Forensics Evidence Management System
-		)";
+    std::string title = R"(
+                $$$$$$$\  $$$$$$$$\ $$$$$$$$\ $$\      $$\  $$$$$$\  
+                $$  __$$\ $$  _____|$$  _____|$$$\    $$$ |$$  __$$\ 
+                $$ |  $$ |$$ |      $$ |      $$$$\  $$$$ |$$ /  \__|
+                $$ |  $$ |$$$$$\    $$$$$\    $$\$$\$$ $$ |\$$$$$$\  
+                $$ |  $$ |$$  __|   $$  __|   $$ \$$$  $$ | \____$$\ 
+                $$ |  $$ |$$ |      $$ |      $$ |\$  /$$ |$$\   $$ |
+                $$$$$$$  |$$ |      $$$$$$$$\ $$ | \_/ $$ |\$$$$$$  |
+                \_______/ \__|      \________|\__|     \__| \______/    
+                    Digital Forensics Evidence Management System
+        )";
 
-	std::string options = R"(
-				=====================================================
+    std::string options = R"(
+                =====================================================
 
-					Are you sure you want to exit? (y/n)
+                    Are you sure you want to exit? (y/n)
 
-				=====================================================
-	)";
+                =====================================================
+    )";
 
-	std::string exitMessage = R"(
-				=====================================================
+    std::string exitMessage = R"(
+                =====================================================
 
-					    Exiting the program. Goodbye!
+                        Exiting the program. Goodbye!
 
-				=====================================================
-		)";
+                =====================================================
+        )";
 
-	std::cout << options << std::endl;
-	char response;
-	response = _getch();
-	if (response == 'y' || response == 'Y' || response == 13) {
-		clearScreen();
-		std::cout << title << std::endl;
-		std::cout << exitMessage << std::endl;
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-		exit(0);
-	} else {
-		clearScreen();
-		mainMenu();
-	}
+    std::cout << options << std::endl;
+
+    char response = _getch();
+
+    if (response == 'y' || response == 'Y' || response == 13) {
+        clearScreen();
+        std::cout << title << std::endl;
+        std::cout << exitMessage << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        exit(0);
+    } else {
+        clearScreen();
+        mainMenu();
+    }
 }
